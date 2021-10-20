@@ -1,46 +1,56 @@
-import typing as tp
+def f1(text: str, shift: int = 3) -> str:
+    plain_text = ""
+    for c in text:
+        if c.isupper():
+            c_unicode = ord(c)
+            index = ord(c) - ord("A")
+            new_index = (index + shift) % 26
+            new_unicode = new_index + ord("A")
+            new_character = chr(new_unicode)
+            plain_text = plain_text + new_character
+        else:
+            c_unicode = ord(c)
+            index = ord(c) - ord("a")
+            new_index = (index + shift) % 26
+            new_unicode = new_index + ord("a")
+            new_character = chr(new_unicode)
+            plain_text = plain_text + new_character
+    return plain_text
 
 
-def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
-    """
-    Encrypts plaintext using a Caesar cipher.
+def encrypt_caesar(encrypted_text: str, shift: int = -3) -> str:
+    plain_text = ""
+    for c in encrypted_text:
+        if c.isupper():
+            c_unicode = ord(c)
+            c_index = ord(c) - ord("A")
+            new_index = (c_index + shift) % 26
+            new_unicode = new_index + ord("A")
+            new_character = chr(new_unicode)
+            plain_text = plain_text + new_character
+        else:
+            c_unicode = ord(c)
+            c_index = ord(c) - ord("a")
+            new_index = (c_index + shift) % 26
+            new_unicode = new_index + ord("a")
+            new_character = chr(new_unicode)
+            plain_text = plain_text + new_character
+    return plain_text
 
-    >>> encrypt_caesar("PYTHON")
-    'SBWKRQ'
-    >>> encrypt_caesar("python")
-    'sbwkrq'
-    >>> encrypt_caesar("Python3.6")
-    'Sbwkrq3.6'
-    >>> encrypt_caesar("")
-    ''
-    """
-    ciphertext = ""
-    # PUT YOUR CODE HERE
-    return ciphertext
+a = []
+text: str = input("Сообщение для шифровки:")
+for i in range(len(text)):
+    if text[i].isalpha():
+        a.append(f1(text[i]))
+    else:
+        a.append(text[i])
+print(*a, sep='')
 
-
-def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
-    """
-    Decrypts a ciphertext using a Caesar cipher.
-
-    >>> decrypt_caesar("SBWKRQ")
-    'PYTHON'
-    >>> decrypt_caesar("sbwkrq")
-    'python'
-    >>> decrypt_caesar("Sbwkrq3.6")
-    'Python3.6'
-    >>> decrypt_caesar("")
-    ''
-    """
-    plaintext = ""
-    # PUT YOUR CODE HERE
-    return plaintext
-
-
-def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
-    """
-    Brute force breaking a Caesar cipher.
-    """
-    best_shift = 0
-    # PUT YOUR CODE HERE
-    return best_shift
+b = []
+textt: str = input("Сообщение для дешифровки:")
+for i in range(len(textt)):
+    if textt[i].isalpha():
+        b.append(encrypt_caesar(textt[i]))
+    else:
+        b.append(textt[i])
+print(*b, sep='')
