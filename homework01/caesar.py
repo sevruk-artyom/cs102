@@ -37,6 +37,7 @@ def encrypt_caesar(encrypted_text: str, shift: int = -3) -> str:
             plain_text = plain_text + new_character
     return plain_text
 
+
 a = []
 text: str = input("Сообщение для шифровки:")
 for i in range(len(text)):
