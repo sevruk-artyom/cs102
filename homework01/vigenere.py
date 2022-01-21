@@ -1,4 +1,4 @@
-def encrypt_vigenere(plaintext: str, keyword: str) -> str:
+def encrypt_vigenere(plaintext, keyword) -> str:
     """
     Encrypts plaintext using a Vigenere cipher.
     >>> encrypt_vigenere("PYTHON", "A")
@@ -8,28 +8,23 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
     'LXFOPVEFRNHR'
     """
-    keyword = keyword.lower()
-    encrypted = []
-    keyword = (keyword * (len(plaintext) // len(keyword) + 1))[: len(plaintext)]
-    key = list(map(ord, keyword))
-    en_process = list(map(ord, plaintext))
-    for i in range(len(en_process)):
-        shift = key[i] - 97
-        if 65 <= en_process[i] <= 90:
-            en_process[i] += shift
-            while en_process[i] > 90:
-                en_process[i] -= 26
-        elif 97 <= en_process[i] <= 122:
-            en_process[i] += shift
-            while en_process[i] > 122:
-                en_process[i] -= 26
-        encrypted.append(chr(en_process[i]))
-    line = ""
-    ciphertext = line.join(encrypted)
+    ciphertext = ""
+    for i, ch in enumerate(plaintext):
+        key_ch = keyword[i % len(keyword)]
+        if "A" <= key_ch <= "Z":
+            shift = ord(key_ch) - ord("A")
+        else:
+            shift = ord(key_ch) - ord("a")
+
+        if "A" <= ch <= "Z":
+            ciphertext += chr(ord("A") + (ord(ch) - ord("A") + shift) % 26)
+        else:
+            ciphertext += chr(ord("a") + (ord(ch) - ord("a") + shift) % 26)
+
     return ciphertext
 
 
-def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
+def decrypt_vigenere(ciphertext, keyword) -> str:
     """
     Decrypts a ciphertext using a Vigenere cipher.
     >>> decrypt_vigenere("PYTHON", "A")
@@ -39,22 +34,17 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
     'ATTACKATDAWN'
     """
-    keyword = keyword.lower()
-    decrypted = []
-    keyword = (keyword * (len(ciphertext) // len(keyword) + 1))[: len(ciphertext)]
-    key = list(map(ord, keyword))
-    de_process = list(map(ord, ciphertext))
-    for i in range(len(de_process)):
-        shift = key[i] - 97
-        if 65 <= de_process[i] <= 90:
-            de_process[i] -= shift
-            while de_process[i] < 65:
-                de_process[i] += 26
-        elif 97 <= de_process[i] <= 122:
-            de_process[i] -= shift
-            while de_process[i] < 97:
-                de_process[i] += 26
-        decrypted.append(chr(de_process[i]))
-    line = ""
-    plaintext = line.join(decrypted)
+    plaintext = ""
+    for i, ch in enumerate(ciphertext):
+        key_ch = keyword[i % len(keyword)]
+        if "A" <= key_ch <= "Z":
+            shift = ord(key_ch) - ord("A")
+        else:
+            shift = ord(key_ch) - ord("a")
+
+        if "A" <= ch <= "Z":
+            plaintext += chr(ord("A") + (26 + ord(ch) - ord("A") - shift) % 26)
+        else:
+            plaintext += chr(ord("a") + (26 + ord(ch) - ord("a") - shift) % 26)
+
     return plaintext
