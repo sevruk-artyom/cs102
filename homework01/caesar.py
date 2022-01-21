@@ -44,7 +44,7 @@ for i in range(len(text)):
         a.append(f1(text[i]))
     else:
         a.append(text[i])
-print(*a, sep='')
+print(*a, sep="")
 
 b = []
 textt: str = input("Сообщение для дешифровки:")
@@ -53,4 +53,4 @@ for i in range(len(textt)):
         b.append(encrypt_caesar(textt[i]))
     else:
         b.append(textt[i])
-print(*b, sep='')
+print(*b, sep="")
