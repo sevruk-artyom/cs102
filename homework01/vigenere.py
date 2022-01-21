@@ -1,30 +1,37 @@
-# -*- coding: utf-8 -*-
-def encrypt_vigenere(plaintext, keyword):
-    '''
+def encrypt_vigenere(plaintext: str, keyword: str) -> str:
+    """
     Encrypts plaintext using a Vigenere cipher.
     >>> encrypt_vigenere("PYTHON", "A")
-    "PYTHON"
+    'PYTHON'
     >>> encrypt_vigenere("python", "a")
-    "python"
+    'python'
     >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
     'LXFOPVEFRNHR'
-    '''
-    ciphertext = ''
+    """
     keyword = keyword.lower()
-    for i in range(len(plaintext)):
-        shift = ord(keyword[i % len(keyword)]) % ord('a')
-        if 'a' <= plaintext[i] <= 'z':
-            new_charcode = (ord(plaintext[i]) % ord('a')+shift) % 26 + ord('a')
-        elif 'A' <= plaintext[i] <= 'Z':
-            new_charcode = (ord(plaintext[i]) % ord('A')+shift) % 26 + ord('A')
-        else:
-            new_charcode = ord(plaintext[i])
-        ciphertext += chr(new_charcode)
+    encrypted = []
+    keyword = (keyword * (len(plaintext) // len(keyword) + 1))[: len(plaintext)]
+    key = list(map(ord, keyword))
+    en_process = list(map(ord, plaintext))
+    for i in range(len(en_process)):
+        shift = key[i] - 97
+        if 65 <= en_process[i] <= 90:
+            en_process[i] += shift
+            while en_process[i] > 90:
+                en_process[i] -= 26
+        elif 97 <= en_process[i] <= 122:
+            en_process[i] += shift
+            while en_process[i] > 122:
+                en_process[i] -= 26
+        encrypted.append(chr(en_process[i]))
+    line = ""
+    ciphertext = line.join(encrypted)
     return ciphertext
 
 
-def decrypt_vigenere(ciphertext, keyword):
+def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
+    Decrypts a ciphertext using a Vigenere cipher.
     >>> decrypt_vigenere("PYTHON", "A")
     'PYTHON'
     >>> decrypt_vigenere("python", "a")
@@ -32,16 +39,22 @@ def decrypt_vigenere(ciphertext, keyword):
     >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
     'ATTACKATDAWN'
     """
-    plaintext = ''
     keyword = keyword.lower()
-    for i in range(len(ciphertext)):
-        shift = ord(keyword[i] % len(keyword)) % ord('a')
-        if 'a' <= plaintext[i] <= 'z':
-            new_charcode = (ord(plaintext[i]) % ord('a')-shift) % 26 + ord('a')
-        elif 'A' <= plaintext[i] <= 'Z':
-            new_charcode = (ord(plaintext[i]) % ord('A')-shift) % 26 + ord('A')
-        else:
-            new_charcode = ord(plaintext[i])
-        ciphertext += chr(new_charcode)
+    decrypted = []
+    keyword = (keyword * (len(ciphertext) // len(keyword) + 1))[: len(ciphertext)]
+    key = list(map(ord, keyword))
+    de_process = list(map(ord, ciphertext))
+    for i in range(len(de_process)):
+        shift = key[i] - 97
+        if 65 <= de_process[i] <= 90:
+            de_process[i] -= shift
+            while de_process[i] < 65:
+                de_process[i] += 26
+        elif 97 <= de_process[i] <= 122:
+            de_process[i] -= shift
+            while de_process[i] < 97:
+                de_process[i] += 26
+        decrypted.append(chr(de_process[i]))
+    line = ""
+    plaintext = line.join(decrypted)
     return plaintext
-    
