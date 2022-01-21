@@ -1,26 +1,47 @@
-def f1(m: str, k: str) -> str:
-    if m.isupper():
-        k *= len(m) // len(k) + 1
-        a = "".join([chr((ord(j) + ord(k[i])) % 26 + ord("A")) for i, j in enumerate(m)])
-        return a
-    else:
-        k *= len(m) // len(k) + 1
-        b = "".join([chr((ord(j) - ord(k[i])) % 26 + ord("a")) for i, j in enumerate(m)])
-        return b
+# -*- coding: utf-8 -*-
+def encrypt_vigenere(plaintext, keyword):
+    '''
+    Encrypts plaintext using a Vigenere cipher.
+    >>> encrypt_vigenere("PYTHON", "A")
+    "PYTHON"
+    >>> encrypt_vigenere("python", "a")
+    "python"
+    >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
+    'LXFOPVEFRNHR'
+    '''
+    ciphertext = ''
+    keyword = keyword.lower()
+    for i in range(len(plaintext)):
+        shift = ord(keyword[i % len(keyword)]) % ord('a')
+        if 'a' <= plaintext[i] <= 'z':
+            new_charcode = (ord(plaintext[i]) % ord('a')+shift) % 26 + ord('a')
+        elif 'A' <= plaintext[i] <= 'Z':
+            new_charcode = (ord(plaintext[i]) % ord('A')+shift) % 26 + ord('A')
+        else:
+            new_charcode = ord(plaintext[i])
+        ciphertext += chr(new_charcode)
+    return ciphertext
 
 
-print(f1("ATTACKATDAWN", "LEMON"))
-
-
-def f2(n: str, k: str) -> str:
-    if n.isupper():
-        k *= len(n) // len(k) + 1
-        c = "".join([chr((ord(j) - ord(k[i])) % 26 + ord("A")) for i, j in enumerate(n)])
-        return c
-    else:
-        k *= len(n) // len(k) + 1
-        d = "".join([chr((ord(j) - ord(k[i])) % 26 + ord("a")) for i, j in enumerate(n)])
-        return d
-
-
-print(f2("LXFOPVEFRNHR", "LEMON"))
+def decrypt_vigenere(ciphertext, keyword):
+    """
+    >>> decrypt_vigenere("PYTHON", "A")
+    'PYTHON'
+    >>> decrypt_vigenere("python", "a")
+    'python'
+    >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
+    'ATTACKATDAWN'
+    """
+    plaintext = ''
+    keyword = keyword.lower()
+    for i in range(len(ciphertext)):
+        shift = ord(keyword[i] % len(keyword)) % ord('a')
+        if 'a' <= plaintext[i] <= 'z':
+            new_charcode = (ord(plaintext[i]) % ord('a')-shift) % 26 + ord('a')
+        elif 'A' <= plaintext[i] <= 'Z':
+            new_charcode = (ord(plaintext[i]) % ord('A')-shift) % 26 + ord('A')
+        else:
+            new_charcode = ord(plaintext[i])
+        ciphertext += chr(new_charcode)
+    return plaintext
+    
