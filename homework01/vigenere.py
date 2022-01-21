@@ -1,4 +1,8 @@
-def encrypt_vigenere(plaintext, keyword) -> str:
+"""importing sth"""
+# import typing as tp
+
+
+def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
     Encrypts plaintext using a Vigenere cipher.
     >>> encrypt_vigenere("PYTHON", "A")
@@ -9,22 +13,29 @@ def encrypt_vigenere(plaintext, keyword) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
-    for i, ch in enumerate(plaintext):
-        key_ch = keyword[i % len(keyword)]
-        if "A" <= key_ch <= "Z":
-            shift = ord(key_ch) - ord("A")
+    a_a = 0
+    while len(plaintext) > len(keyword):
+        keyword += keyword[a_a]
+        a_a += 1
+    for i, _ in enumerate(keyword):
+        if keyword[i].isupper():
+            key = ord(keyword[i]) - 65
+        elif keyword[i].islower():
+            key = ord(keyword[i]) - 97
+        if plaintext[i].isalpha():
+            c_c = ord(plaintext[i])
+            if plaintext[i].isupper() and c_c >= 91 - key:
+                ciphertext += chr(c_c - 26 + key)
+            elif plaintext[i].islower() and c_c >= 123 - key:
+                ciphertext += chr(c_c - 26 + key)
+            else:
+                ciphertext += chr(c_c + key)
         else:
-            shift = ord(key_ch) - ord("a")
-
-        if "A" <= ch <= "Z":
-            ciphertext += chr(ord("A") + (ord(ch) - ord("A") + shift) % 26)
-        else:
-            ciphertext += chr(ord("a") + (ord(ch) - ord("a") + shift) % 26)
-
+            ciphertext += plaintext[i]
     return ciphertext
 
 
-def decrypt_vigenere(ciphertext, keyword) -> str:
+def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
     Decrypts a ciphertext using a Vigenere cipher.
     >>> decrypt_vigenere("PYTHON", "A")
@@ -35,16 +46,23 @@ def decrypt_vigenere(ciphertext, keyword) -> str:
     'ATTACKATDAWN'
     """
     plaintext = ""
-    for i, ch in enumerate(ciphertext):
-        key_ch = keyword[i % len(keyword)]
-        if "A" <= key_ch <= "Z":
-            shift = ord(key_ch) - ord("A")
+    a_b = 0
+    while len(ciphertext) > len(keyword):
+        keyword += keyword[a_b]
+        a_b += 1
+    for i, _ in enumerate(keyword):
+        if keyword[i].isupper():
+            key = ord(keyword[i]) - 65
+        elif keyword[i].islower():
+            key = ord(keyword[i]) - 97
+        if ciphertext[i].isalpha():
+            c_b = ord(ciphertext[i])
+            if ciphertext[i].isupper() and c_b <= 64 + key:
+                plaintext += chr(c_b + 26 - key)
+            elif ciphertext[i].islower() and c_b <= 96 + key:
+                plaintext += chr(c_b + 26 - key)
+            else:
+                plaintext += chr(c_b - key)
         else:
-            shift = ord(key_ch) - ord("a")
-
-        if "A" <= ch <= "Z":
-            plaintext += chr(ord("A") + (26 + ord(ch) - ord("A") - shift) % 26)
-        else:
-            plaintext += chr(ord("a") + (26 + ord(ch) - ord("a") - shift) % 26)
-
+            plaintext += ciphertext[i]
     return plaintext
