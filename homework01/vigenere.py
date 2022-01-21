@@ -8,7 +8,9 @@ def f1(m: str, k: str) -> str:
         b = "".join([chr((ord(j) - ord(k[i])) % 26 + ord("a")) for i, j in enumerate(m)])
         return b
 
+    
 print(f1("ATTACKATDAWN", "LEMON"))
+
 
 def f2(n: str, k: str) -> str:
     if n.isupper():
@@ -20,9 +22,5 @@ def f2(n: str, k: str) -> str:
         d = "".join([chr((ord(j) - ord(k[i])) % 26 + ord("a")) for i, j in enumerate(n)])
         return d
 
+    
 print(f2("LXFOPVEFRNHR", "LEMON"))
-
-
-
-
-
